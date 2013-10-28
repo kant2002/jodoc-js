@@ -2,7 +2,7 @@
 
 var fs = require("fs");
 var path = require("path");
-var markdown = require("github-flavored-markdown").parse;
+var markdown = require("marked").parse;
 var nopt = require("nopt");
 var jodoc = require("./lib/jodoc-lib.js");
 

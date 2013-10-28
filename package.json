@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "nopt": "1",
-    "github-flavored-markdown": "1"
+    "marked": "*"
   },
   "devDependencies": {}
 }
