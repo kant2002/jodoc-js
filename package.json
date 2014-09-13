@@ -14,8 +14,9 @@
     "node": ">=v0.4.0"
   },
   "dependencies": {
-    "nopt": "1",
-    "marked": "*"
+    "marked": "*",
+    "node-fs": "^0.1.7",
+    "nopt": "1"
   },
   "devDependencies": {}
 }

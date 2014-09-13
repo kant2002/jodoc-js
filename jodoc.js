@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var fs = require("fs");
+var fs = require("node-fs");
 var path = require("path");
 var markdown = require("marked").parse;
 var nopt = require("nopt");
@@ -136,9 +136,13 @@ function main() {
 			linked_files.push({name:"_index.html",content:index});
 		}
 		linked_files.forEach(function(lf) {
-				var out = jodoc.html_header(lf.content,options.title,template);
-				fs.writeFile(path.join(options.output,lf.name),out,'utf8',function(e) { if(e) throw e });
-				});
+            var out = jodoc.html_header(lf.content,options.title,template);
+            var resultFileName = path.join(options.output,lf.name);
+            var resultFileDir = path.dirname(resultFileName);
+            process.stdout.write(resultFileDir + "," + resultFileName + "\r");
+            fs.mkdirSync(resultFileDir, 0777, true);
+			fs.writeFile(resultFileName, out, {encoding: 'utf8', flag: 'w+'}, function(e) { if(e) throw e });
+        });
 	} else {
 		var out = linked_files.map(function(lf) {return lf.content});
 		out = out.join('\n');
