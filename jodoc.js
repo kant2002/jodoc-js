@@ -139,7 +139,6 @@ function main() {
             var out = jodoc.html_header(lf.content,options.title,template);
             var resultFileName = path.join(options.output,lf.name);
             var resultFileDir = path.dirname(resultFileName);
-            process.stdout.write(resultFileDir + "," + resultFileName + "\r");
             fs.mkdirSync(resultFileDir, 0777, true);
 			fs.writeFile(resultFileName, out, {encoding: 'utf8', flag: 'w+'}, function(e) { if(e) throw e });
         });
