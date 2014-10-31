@@ -67,7 +67,7 @@ function flatten_files(infiles) {
 		stat = fs.statSync(file);
 		if (stat.isDirectory()) {
 			// make sure readdir puts path back in after
-			var newfiles = fs.readdirSync(file).map(function(f){return path.join(file,f)});
+			var newfiles = fs.readdirSync(file).map(function(f){return path.join(file,f);});
 			// recurse
 			var flat = flatten_files(newfiles);
 			// add the flattened bits back in
@@ -94,7 +94,7 @@ function main() {
 	files = flatten_files(files);
 
 	// filter files
-	files = files.filter(function (file) { return file.match(/\.(js|css|htm[l]?|md(own)?|markdown)$/) });
+	files = files.filter(function (file) { return file.match(/\.(js|css|htm[l]?|md(own)?|markdown)$/); });
 
 	// read files
 	files = files.map(function (file) {
@@ -140,10 +140,10 @@ function main() {
             var resultFileName = path.join(options.output,lf.name);
             var resultFileDir = path.dirname(resultFileName);
             fs.mkdirSync(resultFileDir, 0777, true);
-			fs.writeFile(resultFileName, out, {encoding: 'utf8', flag: 'w+'}, function(e) { if(e) throw e });
+			fs.writeFile(resultFileName, out, {encoding: 'utf8', flag: 'w+'}, function(e) { if(e) throw e; });
         });
 	} else {
-		var out = linked_files.map(function(lf) {return lf.content});
+		var out = linked_files.map(function(lf) {return lf.content;});
 		out = out.join('\n');
 		out = jodoc.html_header(out,options.title,template);
 		process.stdout.write(out);
