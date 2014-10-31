@@ -1,6 +1,7 @@
 # jodoc-js
 
-A nodejs port of [joDoc](https://github.com/davebalmer/joDoc)
+A nodejs port of [joDoc](https://github.com/davebalmer/joDoc) 
+[![Build Status](https://travis-ci.org/kant2002/jodoc-js.svg?branch=master)](https://travis-ci.org/kant2002/jodoc-js)
 
 ## Features
 
