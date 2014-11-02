@@ -16,7 +16,8 @@ function getOpts() {
 		toc: path,
 		title: String,
 		index: Boolean,
-		config: String
+		config: String,
+		useDirectLinking: Boolean
 	},
 	shortHands = {
 		o: ["--output"],
@@ -98,13 +99,14 @@ function main() {
 
 	// read files
 	files = files.map(function (file) {
-			//dockify js and css files
-			var content = fs.readFileSync(file,"utf8").toString();
-			if (file.match(/\.(js|css)$/)) {
+        //dockify js and css files
+		var content = fs.readFileSync(file,"utf8").toString();
+		if (file.match(/\.(js|css)$/)) {
 			content = jodoc.docker(content);
-			}
-			return {name: file, content: content};
-			});
+		}
+		
+        return {name: file, content: content};
+    });
 
 	for(var i = 0, len = files.length; i < len; i++) {
 		if (!files[i].name.match(/\.htm[l]?$/)) {
@@ -118,24 +120,28 @@ function main() {
 		var marked_toc = markdown(jodoc.toclinker(toc,files));
 		files.push({name:"_content", content: marked_toc});
 	}
+
 	files = files.map(function(file){ file.name = jodoc.munge_filename(file.name); return file; });
 	var h1stuff = jodoc.h1finder(files);
-	var linked_files = jodoc.autolink(files,h1stuff.h1s,options.output);
+	var linked_files = jodoc.autolink(files, h1stuff.h1s, options.useDirectLinking, options.output);
 	var index = jodoc.indexer(h1stuff.h1s, options.output);
 	var template;
 	if (options.template) {
 		template = fs.readFileSync(options.template,"utf8").toString();
 	}
+
 	if (options.output) {
 		// existsSync moved to fs in 0.8
 		var f = (fs.existsSync || path.existsSync);
 		if (!f(options.output)) {
 			fs.mkdirSync(options.output,0777);
 		}
+
 		if (options.index) {
-			linked_files.push({name:"_index.html",content:index});
+			linked_files.push({ name:"_index.html", content:index });
 		}
-		linked_files.forEach(function(lf) {
+
+		linked_files.forEach(function (lf) {
             var out = jodoc.html_header(lf.content,options.title,template);
             var resultFileName = path.join(options.output,lf.name);
             var resultFileDir = path.dirname(resultFileName);
