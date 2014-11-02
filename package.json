@@ -24,7 +24,7 @@
   },
   "scripts": {
     "test": "npm run jasmine && npm run jshint",
-    "jshint": "node node_modules/jshint/bin/jshint lib && node node_modules/jshint/bin/jshint jodoc.js",
+    "jshint": "node node_modules/jshint/bin/jshint lib && node node_modules/jshint/bin/jshint spec && node node_modules/jshint/bin/jshint jodoc.js",
     "jasmine": "jasmine-node --captureExceptions --color spec"
   }
 }
