@@ -4,6 +4,14 @@ var jodoclib = require('../lib/jodoc-lib'),
     fs = require('fs'),
     path = require('path');
 
+function getHtml(name) {
+    var filename = path.join('spec', 'files', 'html', name + ".html");
+    return {
+        name: filename,
+        content: fs.readFileSync(filename, "utf8")
+    };
+}
+        
 describe('docker', function () {
     'use strict';
 });
@@ -45,13 +53,6 @@ describe('h1finder', function () {
         expect(h1s.h1s['Test header']).toEqual(files[0].name);
     });
     it('find h1 with atrributes', function () {
-        function getHtml(name) {
-            var filename = path.join('spec', 'files', 'html', name + ".html");
-            return {
-                name: filename,
-                content: fs.readFileSync(filename)
-            };
-        }
         var files = [
             getHtml('h1WithId')
         ],h1s;
@@ -68,4 +69,16 @@ describe('toclinker', function () {
 });
 describe('autolink', function () {
     'use strict';
+    var h1finder = jodoclib.h1finder,
+        autolink = jodoclib.autolink;
+    it('Replace only full words', function () { 
+        var file1Content = getHtml('file1'), 
+            files = [
+                file1Content
+            ],h1s;
+        
+        h1s = h1finder(files);
+        var linked_files = autolink(files, h1s.h1s, true, true);
+        expect(file1Content.content).toEqual(linked_files[0].content);
+    });
 });
