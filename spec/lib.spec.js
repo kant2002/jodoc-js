@@ -1,6 +1,7 @@
 /*jshint node:true, jasmine:true */
 
 var jodoclib = require('../lib/jodoc-lib'),
+    fs = require('fs'),
     path = require('path');
 
 describe('docker', function () {
@@ -27,6 +28,37 @@ describe('munge filename', function () {
 });
 describe('h1finder', function () {
     'use strict';
+    var h1finder = jodoclib.h1finder;
+    it('find simple h1', function () {
+        function getHtml(name) {
+            var filename = path.join('spec', 'files', 'html', name + ".html");
+            return {
+                name: filename,
+                content: fs.readFileSync(filename)
+            };
+        }
+        var files = [
+            getHtml('file1')
+        ],h1s;
+        
+        h1s = h1finder(files);
+        expect(h1s.h1s['Test header']).toEqual(files[0].name);
+    });
+    it('find h1 with atrributes', function () {
+        function getHtml(name) {
+            var filename = path.join('spec', 'files', 'html', name + ".html");
+            return {
+                name: filename,
+                content: fs.readFileSync(filename)
+            };
+        }
+        var files = [
+            getHtml('h1WithId')
+        ],h1s;
+        
+        h1s = h1finder(files);
+        expect(h1s.h1s['Header with id']).toEqual(files[0].name);
+    });
 });
 describe('indexer', function () {
     'use strict';
